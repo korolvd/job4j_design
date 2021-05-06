@@ -17,6 +17,7 @@ public class EvenIterator implements Iterator<Integer> {
         for (var i = point; i < data.length; i++) {
             if (data[i] % 2 == 0) {
                 rsl = true;
+                point = i;
                 break;
             }
         }
@@ -27,9 +28,6 @@ public class EvenIterator implements Iterator<Integer> {
     public Integer next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
-        }
-        while (data[point] % 2 != 0) {
-            point++;
         }
         return data[point++];
     }
