@@ -1,7 +1,5 @@
 package ru.job4j.collection;
 
-import java.util.Objects;
-
 public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
@@ -14,15 +12,18 @@ public class SimpleQueue<T> {
     }
 
     public void push(T value) {
-        int count = size;
-        while (count != 0) {
-            in.push(out.pop());
-            count--;
-        }
-        out.push(value);
-        while (count != size) {
-            out.push(in.pop());
-            count++;
+        if (size > 0) {
+            for (int count = 0; count <= size * 2; count++) {
+                if (count < size) {
+                    in.push(out.pop());
+                } else if (count == size) {
+                    out.push(value);
+                } else {
+                    out.push(in.pop());
+                }
+            }
+        } else {
+            out.push(value);
         }
         size++;
     }
