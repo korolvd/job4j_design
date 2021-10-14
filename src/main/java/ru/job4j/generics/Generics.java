@@ -19,14 +19,12 @@ public class Generics {
         gen.printObject(third);
         System.out.println();
 
-        //gen.printBoundedWildCart(first);
         gen.printBoundedWildCart(second);
         gen.printBoundedWildCart(third);
         System.out.println();
 
         gen.printLowerBoundedWildcard(first);
         gen.printLowerBoundedWildcard(second);
-        //gen.printLowerBoundedWildcard(third);
         System.out.println();
 
     }
