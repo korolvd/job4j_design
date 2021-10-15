@@ -21,7 +21,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
             count++;
             modCount++;
         }
-        if (count > capacity * LOAD_FACTOR) {
+        if (isOverLoad()) {
             expand();
         }
         return result;
@@ -33,6 +33,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private int indexFor(int hash) {
         return (capacity - 1) & hash;
+    }
+
+    private boolean isOverLoad() {
+        return count > capacity * LOAD_FACTOR;
     }
 
     private void expand() {
@@ -49,13 +53,13 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public V get(K key) {
         int i = indexFor(hash(key.hashCode()));
-        return table[i] != null ? table[i].value : null;
+        return table[i] != null && table[i].key.equals(key) ? table[i].value : null;
     }
 
     @Override
     public boolean remove(K key) {
         int i = indexFor(hash(key.hashCode()));
-        boolean rsl = table[i] != null;
+        boolean rsl = table[i] != null && table[i].key.equals(key);
         if (rsl) {
             table[i] = null;
             count--;
