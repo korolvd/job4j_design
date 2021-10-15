@@ -14,15 +14,15 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        int i = indexFor(hash(key.hashCode()));
-        boolean result = table[i] == null;
+        if (count > capacity * LOAD_FACTOR) {
+            expand();
+        }
+        int index = indexFor(hash(key.hashCode()));
+        boolean result = table[index] == null;
         if (result) {
-            table[i] = new MapEntry<>(key, value);
+            table[index] = new MapEntry<>(key, value);
             count++;
             modCount++;
-        }
-        if (isOverLoad()) {
-            expand();
         }
         return result;
     }
@@ -33,10 +33,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private int indexFor(int hash) {
         return (capacity - 1) & hash;
-    }
-
-    private boolean isOverLoad() {
-        return count > capacity * LOAD_FACTOR;
     }
 
     private void expand() {
@@ -52,16 +48,16 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(K key) {
-        int i = indexFor(hash(key.hashCode()));
-        return table[i] != null && table[i].key.equals(key) ? table[i].value : null;
+        int index = indexFor(hash(key.hashCode()));
+        return table[index] != null && table[index].key.equals(key) ? table[index].value : null;
     }
 
     @Override
     public boolean remove(K key) {
-        int i = indexFor(hash(key.hashCode()));
-        boolean rsl = table[i] != null && table[i].key.equals(key);
+        int index = indexFor(hash(key.hashCode()));
+        boolean rsl = table[index] != null && table[index].key.equals(key);
         if (rsl) {
-            table[i] = null;
+            table[index] = null;
             count--;
             modCount++;
         }
@@ -73,11 +69,13 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return new Iterator<>() {
             private final int expectedModCount = modCount;
             private int point = 0;
-            private int shiftPoint = 0;
 
             @Override
             public boolean hasNext() {
-                return point < count;
+                while (point < capacity && table[point] == null) {
+                    point++;
+                }
+                return point < capacity;
             }
 
             @Override
@@ -88,10 +86,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                while (table[shiftPoint + point] == null) {
-                    shiftPoint++;
-                }
-                return table[shiftPoint + point++].key;
+                return table[point++].key;
             }
         };
     }
