@@ -1,4 +1,4 @@
-package io;
+package ru.job4j.io;
 
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
