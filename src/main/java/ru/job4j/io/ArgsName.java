@@ -9,7 +9,7 @@ public class ArgsName {
 
     public String get(String key) {
         if (!values.containsKey(key)) {
-            throw new IllegalArgumentException("Parameter is not exist");
+            throw new IllegalArgumentException("Parameter " + key + " is not exist");
         }
         return values.get(key);
     }
@@ -18,7 +18,7 @@ public class ArgsName {
         for (String arg : args) {
             String[] pair = arg.split("=");
             if (pair.length != 2) {
-                throw new IllegalArgumentException("Incorrect parameter. Usage java -jar argsname.jar -PARAMETER=VALUE.");
+                throw new IllegalArgumentException("Incorrect parameter. Usage -PARAMETER=VALUE.");
             }
             values.put(pair[0].substring(1), pair[1]);
         }
