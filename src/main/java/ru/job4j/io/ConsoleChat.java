@@ -61,7 +61,7 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(path))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(path, Charset.forName("UTF-8"), true))) {
             log.forEach(pw::println);
         } catch (IOException e) {
             e.printStackTrace();
