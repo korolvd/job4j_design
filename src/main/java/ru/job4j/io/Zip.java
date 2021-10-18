@@ -43,7 +43,8 @@ public class Zip {
         }
         String exclude = argsName.get("e");
         File target = new File(argsName.get("o"));
-        List<Path> list = Search.search(sours, p -> p.toFile().isFile());
+        Search search = new Search();
+        List<Path> list = search.search(sours, p -> p.toFile().isFile());
         List<Path> filterList = list.stream().filter(p -> !p.toFile().getName().endsWith(exclude)).collect(Collectors.toList());
         packFile(filterList, target);
         System.out.println("ZIP SUCCESS");
