@@ -25,7 +25,7 @@ public class Config {
                         if (p.length == 2 && (!p[0].isBlank()) && !p[1].isBlank()) {
                             values.put(p[0], p[1]);
                         } else {
-                            throw new IllegalArgumentException();
+                            throw new IllegalArgumentException("Incorrect parameters. Using KEY=VALUE");
                         }
                     });
         } catch (IOException e) {
