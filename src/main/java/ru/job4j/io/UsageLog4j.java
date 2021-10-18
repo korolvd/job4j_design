@@ -8,10 +8,17 @@ public class UsageLog4j {
     private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
 
     public static void main(String[] args) {
-        LOG.trace("trace message");
-        LOG.debug("debug message");
-        LOG.info("info message");
-        LOG.warn("warn message");
-        LOG.error("error message");
+        int age = 33;
+        boolean run = false;
+        char literal = 'D';
+        float inaccuracy = 0.001f;
+        byte temperature = 23;
+        short size = 342;
+        long distance = 1_232_654_876_876L;
+        double frequency = 54.78d;
+
+        LOG.debug("Info age : {}, run : {}, literal : {}, inaccuracy : {}, temperature : {}, size : {},"
+                        + " distance : {}, frequency : {},",
+                age, run, literal, inaccuracy, temperature, size, distance, frequency);
     }
 }
