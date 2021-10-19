@@ -20,6 +20,11 @@ public class Search {
             throw new IllegalArgumentException("Root folder or file extension is empty. "
                     + "Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION.");
         }
+        Path directory = Path.of(args[0]);
+        if (!directory.toFile().isDirectory() && !directory.toFile().exists()) {
+            throw new IllegalArgumentException("Directory is not found. "
+                    + "Specify an existing directory.");
+        }
     }
 
     public static void main(String[] args) throws IOException {
