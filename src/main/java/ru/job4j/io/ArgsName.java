@@ -17,8 +17,8 @@ public class ArgsName {
     private void parse(String[] args) {
         for (String arg : args) {
             String[] pair = arg.split("=");
-            if (pair.length != 2) {
-                throw new IllegalArgumentException("Incorrect parameter. Usage -PARAMETER=VALUE.");
+            if (pair.length != 2 || pair[0].length() < 2 || pair[0].charAt(0) != '-') {
+                throw new IllegalArgumentException("Incorrect parameter " + pair[0] + ". Usage -PARAMETER=VALUE.");
             }
             values.put(pair[0].substring(1), pair[1]);
         }

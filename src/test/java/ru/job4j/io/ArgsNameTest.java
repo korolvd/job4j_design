@@ -26,7 +26,22 @@ public class ArgsNameTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenWrongSomeArgument() {
-        ArgsName jvm = ArgsName.of(new String[] {"-enconding=UTF-8", "-Xmx="});
+    public void whenNoDash() {
+        ArgsName jvm = ArgsName.of(new String[] {"enconding=UTF-8", "-Xmx=512"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenNoKey() {
+        ArgsName jvm = ArgsName.of(new String[] {"=UTF-8", "-Xmx=512"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenNoEqualSign() {
+        ArgsName jvm = ArgsName.of(new String[] {"-enconding=UTF-8", "-Xmx--512"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenDoubleEqualSign() {
+        ArgsName jvm = ArgsName.of(new String[] {"-enconding=UTF-8", "-Xmx==512"});
     }
 }
