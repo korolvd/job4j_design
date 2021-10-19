@@ -10,7 +10,7 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    public static void packFile(List<Path> source, File target) {
+    public void packFile(List<Path> source, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
             for (Path file : source) {
                 zip.putNextEntry(new ZipEntry(file.toFile().getPath()));
@@ -22,31 +22,28 @@ public class Zip {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("ZIP SUCCESS");
     }
 
-    public static void packSingleFile(File source, File target) {
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
-                zip.write(out.readAllBytes());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void validate(ArgsName argsName) {
+        argsName.get("d");
+        argsName.get("e");
+        argsName.get("o");
+        if (!Path.of(argsName.get("d")).toFile().isDirectory()) {
+            throw new IllegalArgumentException("Directory \"" + argsName.get("d") + "\" is not found");
         }
     }
 
     public static void main(String[] args) throws IOException {
         ArgsName argsName = ArgsName.of(args);
+        Zip zip = new Zip();
+        zip.validate(argsName);
         Path sours = Paths.get(argsName.get("d"));
-        if (!sours.toFile().isDirectory()) {
-            throw new IllegalArgumentException("Directory \"" + sours + "\" is not found");
-        }
         String exclude = argsName.get("e");
         File target = new File(argsName.get("o"));
         Search search = new Search();
-        List<Path> list = search.search(sours, p -> p.toFile().isFile());
-        List<Path> filterList = list.stream().filter(p -> !p.toFile().getName().endsWith(exclude)).collect(Collectors.toList());
-        packFile(filterList, target);
-        System.out.println("ZIP SUCCESS");
+        List<Path> listFiles = search.search(sours, p -> p.toFile().isFile());
+        List<Path> filterList = listFiles.stream().filter(p -> !p.toFile().getName().endsWith(exclude)).collect(Collectors.toList());
+        zip.packFile(filterList, target);
     }
 }
