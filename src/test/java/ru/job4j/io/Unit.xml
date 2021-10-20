@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <unit type="ESP" id="21012555452" run="false">
     <controller name="Novomet" id="145879"/>
-    <users>Ivanov</users>
-    <users>Petrov</users>
+    <users>
+        <user>Ivanov</user>
+        <user>Petrov</user>
+    </users>
 </unit>
