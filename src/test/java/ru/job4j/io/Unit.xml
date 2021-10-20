@@ -2,5 +2,5 @@
 <unit type="ESP" id="21012555452" run="false">
     <controller name="Novomet" id="145879"/>
     <users>Ivanov</users>
-    <users>Petrov</users>
+    <users> Petrov</users>
 </unit>
