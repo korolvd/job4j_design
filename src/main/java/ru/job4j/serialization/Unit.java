@@ -3,15 +3,32 @@ package ru.job4j.serialization;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Array;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.*;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Arrays;
 
+@XmlRootElement(name = "unit")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Unit {
-    private final String type;
-    private final long id;
-    private final boolean run;
-    private final Coontroller controller;
-    private final String[] users;
+    @XmlAttribute
+    private String type;
+    @XmlAttribute
+    private long id;
+    @XmlAttribute
+    private boolean run;
+    private Coontroller controller;
+    @XmlElementWrapper
+    @XmlElement(name = "user")
+    private String[] users;
+
+    public Unit() {
+
+    }
 
     public Unit(String type, long id, boolean run, Coontroller controller, String[] users) {
         this.type = type;
@@ -32,13 +49,22 @@ public class Unit {
                 + '}';
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Unit unit = new Unit("ESP", 20000521553L, true, new Coontroller("Novomet", 214125), new String[]{"Ivanov", "Sidorov"});
         System.out.println(unit);
         final Gson gson = new GsonBuilder().create();
-        final String unitToJson = gson.toJson(unit);
-        System.out.println(unitToJson);
-        Unit jsonToUnit = gson.fromJson(unitToJson, Unit.class);
-        System.out.println(jsonToUnit);
+        JAXBContext context = JAXBContext.newInstance(Unit.class);
+        Marshaller marshaller = context.createMarshaller();
+        String xml = "";
+        try (StringWriter writer = new StringWriter()) {
+            marshaller.marshal(unit, writer);
+            xml = writer.getBuffer().toString();
+            System.out.println(xml);
+        }
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try (StringReader reader = new StringReader(xml)) {
+            Unit result = (Unit) unmarshaller.unmarshal(reader);
+            System.out.println(result);
+        }
     }
 }

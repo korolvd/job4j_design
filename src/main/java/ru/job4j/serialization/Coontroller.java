@@ -1,8 +1,18 @@
 package ru.job4j.serialization;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "controller")
 public class Coontroller {
-    private final String name;
-    private final int id;
+    @XmlAttribute
+    private String name;
+    @XmlAttribute
+    private int id;
+
+    public Coontroller() {
+
+    }
 
     public Coontroller(String name, int id) {
         this.name = name;
