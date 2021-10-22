@@ -2,17 +2,20 @@ package ru.job4j.io;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.*;
 
 public class CSVReader {
-
-    public static void handle(ArgsName argsName) throws Exception {
-        try (Scanner scanner = new Scanner(new FileReader(argsName.get("path"), Charset.forName("UTF-8")))) {
-            String delimiter = argsName.get("delimiter");
+    public StringJoiner readCSVByParameters(Map<String, List<String>> args) throws Exception {
+        StringJoiner resultString = new StringJoiner("");
+        try (Scanner scanner = new Scanner(new FileReader(args.get("path").get(0), Charset.forName("UTF-8")))) {
+            String delimiter = args.get("delimiter").get(0);
             List<String> fields = List.of(scanner.nextLine().split(delimiter));
-            List<String> filters = List.of(argsName.get("filter").split(","));
+            List<String> filters = args.get("filter");
             List<Integer> indexesOfFilterFields = new ArrayList<>();
-            StringJoiner resultString = new StringJoiner("");
+            if (filters == null) {
+                filters = new ArrayList<>(fields);
+            }
             Iterator<String> iteratorFilter = filters.iterator();
             while (iteratorFilter.hasNext()) {
                 String filter = iteratorFilter.next();
@@ -36,26 +39,51 @@ public class CSVReader {
                     resultString.add(System.lineSeparator());
                 }
             }
-            if (argsName.get("out").equals("stdout")) {
-                System.out.print(resultString);
-            } else {
-                try (PrintWriter pw = new PrintWriter(new FileWriter(argsName.get("out"), Charset.forName("UTF-8"), true))) {
-                    pw.println(resultString);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return resultString;
+    }
+
+    public void printTo(String key, StringJoiner data) {
+        if ("stdout".equals(key)) {
+            System.out.print(data);
+        } else {
+            try (PrintWriter pw = new PrintWriter(new FileWriter(key, Charset.forName("UTF-8"), true))) {
+                pw.println(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Map<String, List<String>> parsingArgs(String[] args) {
+        if (args.length < 3) {
+            throw new IllegalArgumentException("Invalid parameters. "
+                    + "Usage java -jar csvreader.jar -path=FILE_NAME -delimiter=DELIMITER -out=stdout or -out=OUTPUT_FILE. Optional -filter=FIELD1,FIELD2,...etc");
+        }
+        ArgsName argsName = ArgsName.of(args);
+        Map<String, List<String>> parsingArgs = new HashMap<>();
+        String path = argsName.get("path");
+        if (!Path.of(path).toFile().getName().endsWith("csv")) {
+            throw new IllegalArgumentException("Invalid type of " + path
+                    + ". File must have csv extension");
+        }
+        parsingArgs.put("path", List.of(path));
+        parsingArgs.put("delimiter", List.of(argsName.get("delimiter")));
+        parsingArgs.put("out", List.of(argsName.get("out")));
+        if (args.length == 4) {
+            parsingArgs.put("filter", List.of(argsName.get("filter").split(",")));
+        } else {
+            parsingArgs.put("filter", null);
+        }
+        return parsingArgs;
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length < 4) {
-            throw new IllegalArgumentException("Invalid parameters. "
-                    + "Usage java -jar csvreader.jar -path=FILE_NAME -delimiter=DELIMITER -out=stdout or -out=OUTPUT_FILE -filter=FIELD1,FIELD2,...etc");
-        }
-        ArgsName argsName = ArgsName.of(args);
-        handle(argsName);
+        CSVReader csvReader = new CSVReader();
+        Map<String, List<String>> parsingArgs = csvReader.parsingArgs(args);
+        StringJoiner result = csvReader.readCSVByParameters(parsingArgs);
+        csvReader.printTo(parsingArgs.get("out").get(0), result);
     }
 }

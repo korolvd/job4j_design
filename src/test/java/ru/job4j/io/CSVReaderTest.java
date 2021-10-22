@@ -7,6 +7,9 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 public class CSVReaderTest {
 
@@ -24,9 +27,9 @@ public class CSVReaderTest {
         );
         File file = temporaryFolder.newFile("source.csv");
         File target = temporaryFolder.newFile("target.csv");
-        ArgsName argsName = ArgsName.of(new String[]{
+        String[] args = new String[]{
                 "-path=" + file.getAbsolutePath(), "-delimiter=;", "-out=" + target.getAbsolutePath(), "-filter=name,age"
-        });
+        };
         Files.writeString(file.toPath(), data);
         String expected = String.join(
                 System.lineSeparator(),
@@ -35,7 +38,10 @@ public class CSVReaderTest {
                 "Jack;25",
                 "William;30"
         ).concat(System.lineSeparator());
-        CSVReader.handle(argsName);
+        CSVReader csvReader = new CSVReader();
+        Map<String, List<String>> parsingArgs = csvReader.parsingArgs(args);
+        StringJoiner result = csvReader.readCSVByParameters(parsingArgs);
+        csvReader.printTo(parsingArgs.get("out").get(0), result);
         Assert.assertEquals(expected, Files.readString(target.toPath()));
     }
 
