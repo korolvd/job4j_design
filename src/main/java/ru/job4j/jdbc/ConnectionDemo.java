@@ -18,7 +18,6 @@ public class ConnectionDemo {
         try (Connection connection = DriverManager.getConnection(url, login, password)) {
             DatabaseMetaData metaData = connection.getMetaData();
             System.out.println(metaData.getUserName());
-
             System.out.println(metaData.getURL());
         }
     }
