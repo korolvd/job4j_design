@@ -1,1 +1,1 @@
-create database system_roles
+create database system_roles;
