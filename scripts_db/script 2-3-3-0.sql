@@ -37,8 +37,8 @@ select * from departmens d left join emploers e on d.id = e.departmen_id
 where e.departmen_id is null;
 
 --4
-select * from departmens d right join emploers e on d.id = e.departmen_id;
-select * from emploers e left join departmens d on d.id = e.departmen_id;
+select e.name as Employee, d.name as Departmen from departmens d right join emploers e on d.id = e.departmen_id;
+select e.name as Employee, d.name as Departmen from emploers e left join departmens d on d.id = e.departmen_id;
 
 --5
 create table teens(
