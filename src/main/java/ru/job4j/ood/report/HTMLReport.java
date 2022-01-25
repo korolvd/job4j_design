@@ -1,17 +1,26 @@
-package ru.job4j.ood.srp.report.template;
+package ru.job4j.ood.report;
 
-import java.util.List;
-import ru.job4j.ood.srp.report.model.Employee;
+import ru.job4j.ood.report.model.Employee;
+import ru.job4j.ood.report.store.Store;
 
-public class HTMLTemplate implements ReportTemplate {
+import java.util.function.Predicate;
+
+public class HTMLReport implements Report {
+
+    private Store store;
+
+    public HTMLReport(Store store) {
+        this.store = store;
+    }
+
     @Override
-    public String generate(List<Employee> employees) {
+    public String generate(Predicate<Employee> filter) {
         StringBuilder text = new StringBuilder();
         text.append("<table>")
                 .append(System.lineSeparator())
                 .append("<tr><th>Name</td><td>Hired</th><th>Fired</th><th>Salary</th></tr>")
                 .append(System.lineSeparator());
-        for (Employee employee : employees) {
+        for (Employee employee : store.findBy(filter)) {
             text.append("<tr><td>")
                     .append(employee.getName()).append("</td><td>")
                     .append(employee.getHired()).append("</td><td>")

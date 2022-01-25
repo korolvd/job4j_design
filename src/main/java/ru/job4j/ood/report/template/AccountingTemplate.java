@@ -1,25 +1,25 @@
-package ru.job4j.ood.srp.report;
+package ru.job4j.ood.report.template;
 
-import ru.job4j.ood.srp.report.model.Employee;
-import ru.job4j.ood.srp.report.store.Store;
+import ru.job4j.ood.report.model.Employee;
 
-import java.util.function.Predicate;
+import java.util.List;
 
-public class AccountingReport implements Report {
+public class AccountingTemplate implements ReportTemplate {
+    private double rate = 1.0d;
 
-    private final double rate;
-    private Store store;
+    public AccountingTemplate() {
 
-    public AccountingReport(Store store, double rate) {
+    }
+
+    public AccountingTemplate(double rate) {
         this.rate = rate;
-        this.store = store;
     }
 
     @Override
-    public String generate(Predicate<Employee> filter) {
+    public String generate(List<Employee> employees) {
         StringBuilder text = new StringBuilder();
         text.append("Name; Hired; Fired; Salary").append(System.lineSeparator());
-        for (Employee employee : store.findBy(filter)) {
+        for (Employee employee : employees) {
             text.append(employee.getName()).append(";")
                     .append(employee.getHired()).append(";")
                     .append(employee.getFired()).append(";")

@@ -1,14 +1,11 @@
-package ru.job4j.ood.srp.report;
+package ru.job4j.ood.report;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
-import ru.job4j.ood.srp.report.model.Employee;
-import ru.job4j.ood.srp.report.store.MemStore;
-import ru.job4j.ood.srp.report.template.AccountingTemplate;
-import ru.job4j.ood.srp.report.template.HRTemplate;
-import ru.job4j.ood.srp.report.template.HTMLTemplate;
+import ru.job4j.ood.report.model.Employee;
+import ru.job4j.ood.report.store.MemStore;
 
 import java.util.Calendar;
 

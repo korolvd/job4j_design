@@ -1,6 +1,6 @@
-package ru.job4j.ood.srp.report.template;
+package ru.job4j.ood.report.template;
 
-import ru.job4j.ood.srp.report.model.Employee;
+import ru.job4j.ood.report.model.Employee;
 
 import java.util.List;
 

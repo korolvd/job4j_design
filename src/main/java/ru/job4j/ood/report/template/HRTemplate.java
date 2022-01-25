@@ -1,22 +1,12 @@
-package ru.job4j.ood.srp.report;
+package ru.job4j.ood.report.template;
 
-import ru.job4j.ood.srp.report.model.Employee;
-import ru.job4j.ood.srp.report.store.Store;
+import ru.job4j.ood.report.model.Employee;
 
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.*;
 
-public class HRReport implements Report {
-
-    private Store store;
-
-    public HRReport(Store store) {
-        this.store = store;
-    }
-
+public class HRTemplate implements ReportTemplate {
     @Override
-    public String generate(Predicate<Employee> filter) {
-        List<Employee> employees = store.findBy(filter);
+    public String generate(List<Employee> employees) {
         employees.sort((e1, e2) -> Double.compare(e2.getSalary(), e1.getSalary()));
         StringBuilder text = new StringBuilder();
         text.append("Name; Salary").append(System.lineSeparator());
@@ -28,3 +18,4 @@ public class HRReport implements Report {
         return text.toString();
     }
 }
+

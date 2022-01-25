@@ -1,19 +1,19 @@
-package ru.job4j.ood.srp.report;
+package ru.job4j.ood.report;
 
-import ru.job4j.ood.srp.report.model.Employee;
-import ru.job4j.ood.srp.report.store.Store;
+import ru.job4j.ood.report.model.Employee;
+import ru.job4j.ood.report.store.Store;
 
 import java.util.function.Predicate;
 
+public class AccountingReport implements Report {
 
-public class ReportEngine implements Report {
-
+    private final double rate;
     private Store store;
 
-    public ReportEngine(Store store) {
+    public AccountingReport(Store store, double rate) {
+        this.rate = rate;
         this.store = store;
     }
-
 
     @Override
     public String generate(Predicate<Employee> filter) {
@@ -23,7 +23,7 @@ public class ReportEngine implements Report {
             text.append(employee.getName()).append(";")
                     .append(employee.getHired()).append(";")
                     .append(employee.getFired()).append(";")
-                    .append(employee.getSalary()).append(";")
+                    .append(employee.getSalary() * rate).append(";")
                     .append(System.lineSeparator());
         }
         return text.toString();

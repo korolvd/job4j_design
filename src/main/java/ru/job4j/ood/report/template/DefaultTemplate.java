@@ -1,20 +1,10 @@
-package ru.job4j.ood.srp.report.template;
+package ru.job4j.ood.report.template;
 
-import ru.job4j.ood.srp.report.model.Employee;
+import ru.job4j.ood.report.model.Employee;
 
 import java.util.List;
 
-public class AccountingTemplate implements ReportTemplate {
-    private double rate = 1.0d;
-
-    public AccountingTemplate() {
-
-    }
-
-    public AccountingTemplate(double rate) {
-        this.rate = rate;
-    }
-
+public class DefaultTemplate implements ReportTemplate {
     @Override
     public String generate(List<Employee> employees) {
         StringBuilder text = new StringBuilder();
@@ -23,7 +13,7 @@ public class AccountingTemplate implements ReportTemplate {
             text.append(employee.getName()).append(";")
                     .append(employee.getHired()).append(";")
                     .append(employee.getFired()).append(";")
-                    .append(employee.getSalary() * rate).append(";")
+                    .append(employee.getSalary()).append(";")
                     .append(System.lineSeparator());
         }
         return text.toString();

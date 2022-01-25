@@ -1,6 +1,6 @@
-package ru.job4j.ood.srp.report;
+package ru.job4j.ood.report;
 
-import ru.job4j.ood.srp.report.model.Employee;
+import ru.job4j.ood.report.model.Employee;
 
 import java.util.function.Predicate;
 
