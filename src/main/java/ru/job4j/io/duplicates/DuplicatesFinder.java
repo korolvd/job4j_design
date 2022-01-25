@@ -25,6 +25,5 @@ public class DuplicatesFinder {
         DuplicatesVisitor duplicates = new DuplicatesVisitor();
         Files.walkFileTree(Path.of(finder.getPath(args)), duplicates);
         finder.printConsole(duplicates.getDuplicates());
-
     }
 }
