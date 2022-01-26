@@ -7,6 +7,10 @@ import org.junit.Test;
 import ru.job4j.ood.report.model.Employee;
 import ru.job4j.ood.report.store.MemStore;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 
 public class ReportEngineTest {
@@ -88,6 +92,66 @@ public class ReportEngineTest {
                 .append(worker1.getName()).append(";")
                 .append(worker1.getSalary()).append(";")
                 .append(System.lineSeparator());
+        assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenJSONGenerated() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        store.add(worker);
+        Report engine = new JSONReport(store);
+        StringBuilder expect = new StringBuilder()
+                .append("[{\"name\":\"").append(worker.getName()).append("\",")
+                .append("\"hired\":{")
+                .append("\"year\":").append(worker.getHired().get(Calendar.YEAR)).append(",")
+                .append("\"month\":").append(worker.getHired().get(Calendar.MONTH)).append(",")
+                .append("\"dayOfMonth\":").append(worker.getHired().get(Calendar.DAY_OF_MONTH)).append(",")
+                .append("\"hourOfDay\":").append(worker.getHired().get(Calendar.HOUR_OF_DAY)).append(",")
+                .append("\"minute\":").append(worker.getHired().get(Calendar.MINUTE)).append(",")
+                .append("\"second\":").append(worker.getHired().get(Calendar.SECOND)).append("},")
+                .append("\"fired\":{")
+                .append("\"year\":").append(worker.getFired().get(Calendar.YEAR)).append(",")
+                .append("\"month\":").append(worker.getFired().get(Calendar.MONTH)).append(",")
+                .append("\"dayOfMonth\":").append(worker.getFired().get(Calendar.DAY_OF_MONTH)).append(",")
+                .append("\"hourOfDay\":").append(worker.getFired().get(Calendar.HOUR_OF_DAY)).append(",")
+                .append("\"minute\":").append(worker.getFired().get(Calendar.MINUTE)).append(",")
+                .append("\"second\":").append(worker.getFired().get(Calendar.SECOND)).append("},")
+                .append("\"salary\":").append(worker.getSalary()).append("}]");
+        assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenXMLGenerated() {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        OffsetDateTime date = OffsetDateTime.ofInstant(now.toInstant(), now.getTimeZone().toZoneId());
+        Employee worker1 = new Employee("Ivan", now, now, 100);
+        Employee worker2 = new Employee("Petr", now, now, 300);
+        store.add(worker1);
+        store.add(worker2);
+        Report engine = new XMLReport(store);
+        StringBuilder expect = new StringBuilder()
+                .append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n")
+                .append("<employees>\n")
+                .append("    <employee name=\"").append(worker1.getName()).append("\">\n")
+                .append("        <hired>")
+                .append(date).append("</hired>\n")
+                .append("        <fired>")
+                .append(date).append("</fired>\n")
+                .append("        <salary>")
+                .append(worker1.getSalary()).append("</salary>\n")
+                .append("    </employee>\n")
+                .append("    <employee name=\"").append(worker2.getName()).append("\">\n")
+                .append("        <hired>")
+                .append(date).append("</hired>\n")
+                .append("        <fired>")
+                .append(date).append("</fired>\n")
+                .append("        <salary>")
+                .append(worker2.getSalary()).append("</salary>\n")
+                .append("    </employee>\n")
+                .append("</employees>\n");
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
 }
