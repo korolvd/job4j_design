@@ -1,7 +1,8 @@
 package ru.job4j.ood.parking.storage;
 
-import ru.job4j.list.List;
 import ru.job4j.ood.parking.model.Vehicle;
+
+import java.util.List;
 
 public interface Parking {
 
@@ -12,4 +13,8 @@ public interface Parking {
     Vehicle getVehicle(String serialNumber);
 
     List<Vehicle> getVehiclesList();
+
+    int getMaxTruckSpaces();
+
+    int getCapacity();
 }

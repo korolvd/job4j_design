@@ -9,13 +9,16 @@ public class Truck implements Vehicle {
     private int size;
 
     public Truck(String serialNumber, int size) {
+        if (size < 2) {
+            throw new IllegalArgumentException("size must be greater 1");
+        }
         this.size = size;
         this.serialNumber = serialNumber;
     }
 
     @Override
     public int getSize() {
-        return 0;
+        return size;
     }
 
     public String getSerialNumber() {
