@@ -25,14 +25,33 @@ public class CinemaTest {
     }
 
     @Ignore
-    @Test
-    public void buyWhenNoTicketThenNull() {
+    @Test(expected = IllegalArgumentException.class)
+    public void buyWhenNoTicketThenException() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
         date.set(2020, 10, 10, 23, 00);
         Ticket ticket = cinema.buy(account, 1, 1, date);
-        assertNull(ticket);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void buyWhenIllegalSeatThenException() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 100, 10000, date);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void buyWhenIllegalDateThenException() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(1020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 100, 10000, date);
     }
 
     @Ignore
