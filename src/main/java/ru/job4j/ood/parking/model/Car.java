@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Car implements Vehicle {
     private final String serialNumber;
-    private final int size = 1;
+    public static final int SIZE = 1;
 
     public Car(String number) {
         this.serialNumber = number;
@@ -12,7 +12,7 @@ public class Car implements Vehicle {
 
     @Override
     public int getSize() {
-        return size;
+        return SIZE;
     }
 
     public String getSerialNumber() {
