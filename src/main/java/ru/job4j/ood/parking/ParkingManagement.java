@@ -7,6 +7,8 @@ import java.util.List;
 
 public class ParkingManagement {
 
+    private final int minSize = 1;
+
     private final Parking parking;
 
     public ParkingManagement(Parking parking) {
@@ -27,13 +29,13 @@ public class ParkingManagement {
         int truckSize = 0;
         int carSize = 0;
         for (Vehicle v : vehicles) {
-            if (v.getSize() == 1) {
+            if (v.getSize() == minSize) {
                 carSize++;
             } else {
                 truckSize += v.getSize();
             }
         }
-        if (vehicle.getSize() == 1) {
+        if (vehicle.getSize() == minSize) {
             boolean isTruckOnCarSpaces = parking.getMaxTruckSpaces() < truckSize;
             int trucksOnCarSpaces = isTruckOnCarSpaces ? truckSize - parking.getMaxTruckSpaces() : 0;
             rsl = parking.getCapacity() - parking.getMaxTruckSpaces() - trucksOnCarSpaces - carSize;
