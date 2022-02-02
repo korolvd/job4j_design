@@ -7,9 +7,11 @@ import java.util.function.Predicate;
 
 public interface Store {
 
-    void add(Food food);
+    boolean add(Food food);
 
     Predicate<Food> filter();
+
+    long getFreshPercent(Food food);
 
     List<Food> getAll();
 

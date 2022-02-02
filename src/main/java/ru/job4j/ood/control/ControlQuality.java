@@ -9,7 +9,7 @@ public class ControlQuality {
 
     public void sort(List<Store> stores, List<Food> foods) {
         for (Store store : stores) {
-            foods.stream().filter(store.filter()).forEach(store::add);
+            foods.forEach(store::add);
         }
     }
 }

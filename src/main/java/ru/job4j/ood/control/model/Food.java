@@ -1,7 +1,6 @@
 package ru.job4j.ood.control.model;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 public class Food {
     private String name;
@@ -40,12 +39,5 @@ public class Food {
 
     public void setDiscount(int discount) {
         this.discount = discount;
-    }
-
-    public long fresh() {
-        long shelfLife = createDate.until(expiryDate, ChronoUnit.DAYS);
-        long daysUntilExpiry = LocalDate.now().until(expiryDate, ChronoUnit.DAYS);
-        double percent = (double) daysUntilExpiry / shelfLife * 100;
-        return (long) percent;
     }
 }

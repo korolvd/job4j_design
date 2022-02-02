@@ -1,6 +1,5 @@
 package ru.job4j.ood.control;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import ru.job4j.ood.control.model.*;
 import ru.job4j.ood.control.store.Shop;
@@ -18,9 +17,9 @@ public class ControlQualityTest {
 
     @Test
     public void whenExpired() {
-        Store warehouse = new Warehouse(f -> f.fresh() > 75);
-        Store shop = new Shop(f -> f.fresh() <= 75 && f.fresh() > 0);
-        Store trash = new Trash(f -> f.fresh() <= 0);
+        Store warehouse = new Warehouse();
+        Store shop = new Shop();
+        Store trash = new Trash();
         List<Store> stores = List.of(warehouse, shop, trash);
         Food cake = new Cake("Cake",
                 LocalDate.of(2022, 1, 1),
@@ -32,29 +31,27 @@ public class ControlQualityTest {
         assertThat(trash.getAll(), is(foods));
     }
 
-    @Ignore
     @Test
     public void whenExpiryDateLessThen25AndSetDiscount() {
-        Store warehouse = new Warehouse(f -> f.fresh() > 75);
-        Store shop = new Shop(f -> f.fresh() <= 75 && f.fresh() > 0);
-        Store trash = new Trash(f -> f.fresh() <= 0);
+        Store warehouse = new Warehouse();
+        Store shop = new Shop();
+        Store trash = new Trash();
         List<Store> stores = List.of(warehouse, shop, trash);
         Food cheese = new Cheese("Cheese",
                 LocalDate.of(2022, 1, 1),
-                LocalDate.of(2022, 2, 1),
+                LocalDate.of(2022, 2, 4),
                 200, 0);
         List<Food> foods = List.of(cheese);
         ControlQuality controlQuality = new ControlQuality();
         controlQuality.sort(stores, foods);
-        assertThat(shop.getAll(), is(foods));
         assertThat(cheese.getDiscount(), is(75));
     }
 
     @Test
     public void whenExpiryDateLessThen75() {
-        Store warehouse = new Warehouse(f -> f.fresh() > 75);
-        Store shop = new Shop(f -> f.fresh() <= 75 && f.fresh() > 0);
-        Store trash = new Trash(f -> f.fresh() <= 0);
+        Store warehouse = new Warehouse();
+        Store shop = new Shop();
+        Store trash = new Trash();
         List<Store> stores = List.of(warehouse, shop, trash);
         Food milk = new Milk("Milk",
                 LocalDate.of(2022, 1, 1),
@@ -63,15 +60,14 @@ public class ControlQualityTest {
         List<Food> foods = List.of(milk);
         ControlQuality controlQuality = new ControlQuality();
         controlQuality.sort(stores, foods);
-        assertThat(shop.getAll(), is(foods));
         assertThat(milk.getDiscount(), is(0));
     }
 
     @Test
     public void whenExpiryDateHiThen75() {
-        Store warehouse = new Warehouse(f -> f.fresh() > 75);
-        Store shop = new Shop(f -> f.fresh() <= 75 && f.fresh() > 0);
-        Store trash = new Trash(f -> f.fresh() <= 0);
+        Store warehouse = new Warehouse();
+        Store shop = new Shop();
+        Store trash = new Trash();
         List<Store> stores = List.of(warehouse, shop, trash);
         Food apple = new Produce("Apple",
                 LocalDate.of(2022, 1, 1),
@@ -84,12 +80,11 @@ public class ControlQualityTest {
         assertThat(apple.getDiscount(), is(0));
     }
 
-    @Ignore
     @Test
     public void whenMultiSort() {
-        Store warehouse = new Warehouse(f -> f.fresh() > 75);
-        Store shop = new Shop(f -> f.fresh() <= 75 && f.fresh() > 0);
-        Store trash = new Trash(f -> f.fresh() <= 0);
+        Store warehouse = new Warehouse();
+        Store shop = new Shop();
+        Store trash = new Trash();
         List<Store> stores = List.of(warehouse, shop, trash);
         Food cake = new Cake("Cake",
                 LocalDate.of(2022, 1, 1),
@@ -97,7 +92,7 @@ public class ControlQualityTest {
                 124.4, 0);
         Food cheese = new Cheese("Cheese",
                 LocalDate.of(2022, 1, 1),
-                LocalDate.of(2022, 2, 1),
+                LocalDate.of(2022, 2, 4),
                 200, 0);
         Food milk = new Milk("Milk",
                 LocalDate.of(2022, 1, 1),
@@ -113,6 +108,30 @@ public class ControlQualityTest {
         assertThat(trash.getAll(), is(List.of(cake)));
         assertThat(shop.getAll(), is(List.of(cheese, milk)));
         assertThat(warehouse.getAll(), is(List.of(apple)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenAddToWHNullThenIllegalArgumentsThenException() {
+        Store warehouse = new Warehouse();
+        warehouse.add(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenAddToShopNullThenIllegalArgumentsThenException() {
+        Store shop = new Shop();
+        shop.add(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenAddToTrashNullThenIllegalArgumentsThenException() {
+        Store trash = new Trash();
+        trash.add(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenGetFreshOfNullThenIllegalArgumentsThenException() {
+        Store trash = new Trash();
+        trash.getFreshPercent(null);
     }
 
 }
