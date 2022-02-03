@@ -7,7 +7,13 @@ import java.util.List;
 
 public class ControlQuality {
 
-    public void sort(List<Store> stores, List<Food> foods) {
+    private List<Store> stores;
+
+    public ControlQuality(List<Store> stores) {
+        this.stores = stores;
+    }
+
+    public void sort(List<Food> foods) {
         for (Store store : stores) {
             foods.forEach(store::add);
         }

@@ -26,8 +26,8 @@ public class ControlQualityTest {
                 LocalDate.of(2022, 1, 25),
                 124.4, 0);
         List<Food> foods = List.of(cake);
-        ControlQuality controlQuality = new ControlQuality();
-        controlQuality.sort(stores, foods);
+        ControlQuality controlQuality = new ControlQuality(stores);
+        controlQuality.sort(foods);
         assertThat(trash.getAll(), is(foods));
     }
 
@@ -42,8 +42,8 @@ public class ControlQualityTest {
                 LocalDate.of(2022, 2, 4),
                 200, 0);
         List<Food> foods = List.of(cheese);
-        ControlQuality controlQuality = new ControlQuality();
-        controlQuality.sort(stores, foods);
+        ControlQuality controlQuality = new ControlQuality(stores);
+        controlQuality.sort(foods);
         assertThat(cheese.getDiscount(), is(75));
     }
 
@@ -58,8 +58,8 @@ public class ControlQualityTest {
                 LocalDate.of(2022, 3, 1),
                 200, 0);
         List<Food> foods = List.of(milk);
-        ControlQuality controlQuality = new ControlQuality();
-        controlQuality.sort(stores, foods);
+        ControlQuality controlQuality = new ControlQuality(stores);
+        controlQuality.sort(foods);
         assertThat(milk.getDiscount(), is(0));
     }
 
@@ -74,8 +74,8 @@ public class ControlQualityTest {
                 LocalDate.of(2023, 1, 1),
                 150.1, 0);
         List<Food> foods = List.of(apple);
-        ControlQuality controlQuality = new ControlQuality();
-        controlQuality.sort(stores, foods);
+        ControlQuality controlQuality = new ControlQuality(stores);
+        controlQuality.sort(foods);
         assertThat(warehouse.getAll(), is(foods));
         assertThat(apple.getDiscount(), is(0));
     }
@@ -103,8 +103,8 @@ public class ControlQualityTest {
                 LocalDate.of(2023, 1, 1),
                 150.1, 0);
         List<Food> foods = List.of(cake, cheese, apple, milk);
-        ControlQuality controlQuality = new ControlQuality();
-        controlQuality.sort(stores, foods);
+        ControlQuality controlQuality = new ControlQuality(stores);
+        controlQuality.sort(foods);
         assertThat(trash.getAll(), is(List.of(cake)));
         assertThat(shop.getAll(), is(List.of(cheese, milk)));
         assertThat(warehouse.getAll(), is(List.of(apple)));
